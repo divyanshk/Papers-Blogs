@@ -31,3 +31,13 @@ References
 * [Paper](https://arxiv.org/abs/1712.04741)
 
 ---
+
+## <a name="wgan"></a>Wasserstein GAN
+
+* paper
+* blog
+
+References
+* [Paper](https://arxiv.org/abs/1701.07875)
+
+---
