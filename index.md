@@ -34,10 +34,19 @@ References
 
 ## <a name="wgan"></a>Wasserstein GAN
 
-* paper
-* blog
+* Wasserstein GAN (2017) was one of the first papers of GANs trying to solve the mode collapse problem which is pretty evident in most classical GAN architectures
+* Mode Collapse: the network is able to learn only a certain modes (distributions) and hence not generalise properly; the generator learn only limited samples
+* Modelling $$ P_{\theta} $$ is challenging because the distribution is a low dimensional manifold embedded in a very high dimensional space; the true and model manifold's distribution may not have negligible intersection (singluar support), hence KL divergence won't work well
+* The paper talks about a distance measure which is weak so as to make it easier for a sequence of distributions to converge
+* Section 2 introduces and evaluates different types of distance metrics, showing Earth-Mover (EM) distance is the better choice of them all
+* The WGANs are based on the dual form of the optimal transport problem
+* Because of the continuity and differentiality of the loss function, the critic is trained to optimality eliminating mode collapse
+* The better the critic, the higher the gradients we use to train the disciminator
+* Importantly, the authors report that no experiment suffered from mode collapse
+* Lipschitz continuity plays a major role in the success of the dual form of the EMD
 
 References
 * [Paper](https://arxiv.org/abs/1701.07875)
+* [Blog](https://vincentherrmann.github.io/blog/wasserstein/)
 
 ---
