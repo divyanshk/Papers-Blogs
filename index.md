@@ -2,7 +2,9 @@
 layout: default
 ---
 
-[Mathematics of Deep Learning](#vidal)   
+[Mathematics of Deep Learning](#vidal)  
+[Wasserstein GAN](#wgan)   
+[Why and How of Nonnegative Matrix Factorization](#nmf)   
 
 ---
 
@@ -48,5 +50,26 @@ References
 References
 * [Paper](https://arxiv.org/abs/1701.07875)
 * [Blog](https://vincentherrmann.github.io/blog/wasserstein/)
+
+---
+
+## <a name="nmf"></a>Why and How of Nonnegative Matrix Factorization
+
+* NMF is a highly important tool used to extract meaningful and sparse features from a high dimensional matrix
+* Most useful applications of NMF are in data mining, document processing, image processing, collaborative filtering, recommendation systems, etc
+* Low-rank matrix factorization is representing p-dimensional data points in a r-dimensional linear subspace spanned by basis elements $$w_k$$ and the weights $$h_j$$
+
+$$ x_j \approx \sum_{k=1}^{r}\ w_kh_j(k) \;\text{for some weights}\; h_j \in \mathbb{R}^{r}$$
+
+* The noise model is crucial in the choice of the measure to access the quality of approximation
+* NMF aims at decomposing a given nonnegative data matrix X as X ≈ WH where W ≥ 0 and H ≥ 0 (meaning that W and H are component-wise nonnegative)
+* NMF is NP-Hard; the unconstrained version of the problem can be solved with SVD though
+* NMF is ill-posed; there can be multiple solution to the same problem
+* Choice of r is crucial; it can be estimated using SVD, or use trial and error to choose one with lowest error
+* Most NMF algorithms follow the general framework of Two-Block Coordinate Descent; eg Alternating Least Squares
+* Initialization of the matrices W and H is a challenge; options at hand - randomization, clustering techniques, SVD with $$ [x]_{+} = max(x, 0) $$
+
+References
+* [Paper](https://arxiv.org/abs/1401.5226)
 
 ---
