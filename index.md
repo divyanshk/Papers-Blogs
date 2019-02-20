@@ -79,9 +79,11 @@ References
 
 * Densenets are a type of deep convolutional networks which try to solve the problem of ResNets
 * Instead of having crazy deep nets with identity connections (ResNets), these nets have smaller depth but connect all previous layers to a deeper layer (n * n+1 / 2)
+* The feature maps from previous layers are concatenated at every layer
 * This way of connection ensures maximum information flow between laters in the netowrk
 * This also helps in solving the vanishing gradient problem, and reduces the parameters required as every layer has the information from the previous layers and does not need learn the gradients for it again (feature reuse)
 * The authors organise a typical deep DenseNet as a collection of dense blocks (whose all layers are connected to all its previous layers), bottleneck and compression layers
+* Having dense blocks allows the use of pooling in between as transitions
 * A crucial hyperparameter in DenseNets is growth rate, which is the number of feature maps coming out of a layer; the paper show relatively a small growth rate is sufficient to obtain state-of-the-art results
 
 References
