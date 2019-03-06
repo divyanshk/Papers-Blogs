@@ -7,6 +7,7 @@ layout: default
 [Why and How of Nonnegative Matrix Factorization](#nmf)   
 [DenseNet](#dense)  
 [Learning Generative Models with Sinkhorn Divergences](#sinkhorn)   
+[Improving GANs Using Optimal Transport](#otgan)   
 
 ---
 
@@ -114,3 +115,27 @@ References
 
 ---
 
+## <a name="otgan"></a>Improving GANs Using Optimal Transport
+
+
+* This paper presents OTGAN which minimizes aa new metric measuring the distance between the generator distribution and data distribution
+* This distance called the mini-batch energy distaance combines OT (primal form) with an energy distance
+* The dual form of OT resembles GANs formulation, but primal form allows for closed form solutions
+* The authors point out the disadvantage of the method used in the paper above, that it leads to biased estimators of the gradients (because of the mini-batch)
+* Salimans et al 2016 suggests using distributions over mini-batches
+* The distance suggested
+
+$$ \mathcal{D}^2_{MED}(p, g) = 2\mathbb{E}[\mathbb{W}_c(\mathbf{X}, \mathbf{Y})] - \mathbb{E}[\mathbb{W}_c(\mathbf{X}, \mathbf{X'})] - \mathbb{E}[\mathbb{W}_c(\mathbf{Y}, \mathbf{Y'})]$$
+
+where $$\mathbf{X}, \mathbf{X'}$$ aare individually sampled mini-bathces from distribution $$\textit{p}$$ and $$\mathbf{Y}, \mathbf{Y'}$$ are independent mini-bathces from $$\textit{g}$$
+
+* $$\mathbb{W}$$ is the entropy regularized Wasserstein distance, or the Sinkhorn distance; and the energy function is inspired from Bellemare et al 2017 (CramerGAN)
+
+* The cost function $$c$$ is learned adversarially, as the cosine distance between two latent vectors (a neural network maps the images into a learned latent space)
+* They do not backpropogate gradients through the Sinkhorn algorithm
+* Downside: requires large amount of computation and memeory
+
+References
+* [Paper](https://arxiv.org/abs/1803.05573)
+
+---
