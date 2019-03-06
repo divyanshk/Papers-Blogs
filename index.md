@@ -5,7 +5,8 @@ layout: default
 [Mathematics of Deep Learning](#vidal)  
 [Wasserstein GAN](#wgan)   
 [Why and How of Nonnegative Matrix Factorization](#nmf)   
-[DenseNet](#dense)   
+[DenseNet](#dense)  
+[Learning Generative Models with Sinkhorn Divergences](#sinkhorn)   
 
 ---
 
@@ -90,3 +91,26 @@ References
 * [Paper](https://arxiv.org/abs/1608.06993)
 
 ---
+
+## <a name="sinkhorn"></a>Learning Generative Models with Sinkhorn Divergences
+
+* Training generative models using OT suffers from the computational inefficiency, lack of smoothness and instability
+* This paper provides a method to train such models using an OT-based loss called Sinkhorn, based on entropic regularization and utilizing automatic differentiation
+* The primal form of the Earth-Mover Distance (EMD) is highly intractable
+* Introducing entropic regularization leads to an approximation (Sinkhorn distance) to the full EMD loss
+
+$$ d^{\lambda}_M(r,c) = min_{P\in U(r,c)}\ \sum_{i\,j}\ P_{i\,j} \ M_{i\,j} - \frac{1}{\lambda} h(P)$$
+
+* For $$\lambda \to \infty$$ the solution converges to the original EMD and for $$\lambda \to 0$$ it forms a homogenous solution (MMD)
+* The paper proposes a plan to use minibatch sampling loss and Sinkhorn-Knopp's iterative algorithm to solve for $$P^{\lambda}_{i,j}$$
+* A neural network is used to learn a cost function (acts as a discriminator)
+
+
+References
+* [Paper](http://proceedings.mlr.press/v84/genevay18a/genevay18a.pdf)
+* [Sinkhorn Paper](https://arxiv.org/pdf/1306.0895.pdf)
+* [Blog](https://michielstock.github.io/OptimalTransport/)
+* [Blog](https://regularize.wordpress.com/2015/09/17/calculating-transport-plans-with-sinkhorn-knopp/)
+
+---
+
