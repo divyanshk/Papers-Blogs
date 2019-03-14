@@ -8,6 +8,7 @@ layout: default
 [DenseNet](#dense)  
 [Learning Generative Models with Sinkhorn Divergences](#sinkhorn)   
 [Improving GANs Using Optimal Transport](#otgan)   
+[Mask R-CNN](#maskrcnn)   
 
 ---
 
@@ -139,3 +140,21 @@ References
 * [Paper](https://arxiv.org/abs/1803.05573)
 
 ---
+
+## <a name="maskrcnn"></a>Mask R-CNN
+
+* Extension to Faster R-CNN; adds a masking branch which works in parallel to the classification branch
+* RoIPool causes a misalignment; RoIAlign fixes that by having no quantizations
+* Predict a binary mask for each class independently, without competition among classes, and rely on the network’s RoI classification branch to predict the category
+* The first stage, called a Region Proposal Network (RPN), proposes candidate object bounding boxes
+* The second layer extracts features using RoIPool from each candidate box and performs classification and bounding-box regression
+* In the second stage, in parallel to predicting the class and box offset, Mask R-CNN also outputs a binary mask for each RoI
+
+$$ L = L_{cls} + L_{box} + L_{mask} $$
+
+* More to come !!
+
+References
+* [Mark R-CNN Paper](https://arxiv.org/abs/1703.06870)
+* [FPN](https://arxiv.org/pdf/1612.03144.pdf)
+* [Fast R-CNN](https://arxiv.org/pdf/1504.08083.pdf)
