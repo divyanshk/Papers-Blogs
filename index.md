@@ -152,9 +152,13 @@ References
 
 $$ L = L_{cls} + L_{box} + L_{mask} $$
 
-* More to come !!
+* RoIPooling is simple and nice; but it causes the target cells to not be of the same size
+* RoIAlign prevents this by using bilinear interpolation over the input feature maps; this causes significant improvement in accuracy
+* Non-maximum suppression groups highly overlapped boxes for the same class and selects the most confidence prediction only; this avoids duplicates for the same object
 
 References
+* [Helpful image](https://cdn-images-1.medium.com/max/2600/1*M_ZhHp8OXzWxEsfWu2e5EA.png)
 * [Mark R-CNN Paper](https://arxiv.org/abs/1703.06870)
 * [FPN](https://arxiv.org/pdf/1612.03144.pdf)
 * [Fast R-CNN](https://arxiv.org/pdf/1504.08083.pdf)
+* [Blog](https://medium.com/@jonathan_hui/image-segmentation-with-mask-r-cnn-ebe6d793272)
