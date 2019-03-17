@@ -10,6 +10,7 @@ layout: default
 [Improving GANs Using Optimal Transport](#otgan)   
 [Mask R-CNN](#maskrcnn)   
 [Fully Convolutional Networks for Semantic Segmentation](#fcn)   
+[Improving Sequence-To-Sequence Learning Via Optimal Transport](#seq2seqot)   
 
 ---
 
@@ -177,3 +178,24 @@ References
 * [Paper](https://arxiv.org/abs/1411.4038)
 
 ---
+
+## <a name="seq2seqot"></a>Improving Sequence-To-Sequence Learning Via Optimal Transport
+* For word prediction tasks, MLE suffers from [exposure bias problem](https://divyanshk.github.io/Mini-Blogs/#bias)
+* Attempts to alleviate the issues are i) RL based ii) Adversarial learning based
+* OT loss allows end-to-end supervised training and acts asa an effective sequence-level regularization to the MLE loss
+* The authors' novel strategy considers not only the OT distance between the generated sentence and ground truth references, but also the OT distance between the generated sequence and its corresponding input
+* The OT approach is derived from soft bipartite matching (see Figure 1 in paper)
+* The authors use the IPOT algorithm to solve the OT optimiation problem; though the Sinkhorn algorithm can be used, IPOT was empirially found to be better
+* The soft copying mechanism considers semantic similarity in the embedding space
+* MLE loss is still require to capture the syntactic structure
+* OT losses aare basically used as efficient regularizers
+
+$$
+\mathcal{L} = \mathcal{L}_{MLE} + \gamma_1 \ \mathcal{L}_{copy} + \gamma_2 \ \mathcal{L}_{seq} 
+$$
+
+* The authors use Wasserstein Gradient Flows (WGF) to descibe how the model approximately leaarns to match the ground-truth sequence distribution
+* In WGF, the Wasserstein distaance describes the local geometry of aa trajectory in the space of probability measures converging to a target distribution
+
+References
+* [Paper](https://arxiv.org/abs/1901.06283)
