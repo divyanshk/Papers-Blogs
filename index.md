@@ -9,6 +9,7 @@ layout: default
 [Learning Generative Models with Sinkhorn Divergences](#sinkhorn)   
 [Improving GANs Using Optimal Transport](#otgan)   
 [Mask R-CNN](#maskrcnn)   
+[Fully Convolutional Networks for Semantic Segmentation](#fcn)   
 
 ---
 
@@ -162,3 +163,17 @@ References
 * [FPN](https://arxiv.org/pdf/1612.03144.pdf)
 * [Fast R-CNN](https://arxiv.org/pdf/1504.08083.pdf)
 * [Blog](https://medium.com/@jonathan_hui/image-segmentation-with-mask-r-cnn-ebe6d793272)
+
+---
+
+## <a name="fcn"></a>Fully Convolutional Networks for Semantic Segmentation
+* The paper details training a fully convolutional network (FCN) end-to-end, pixels-to-pixels on semantic segmentation
+* Upsampling is performed in-network for end-to-end learning by backpropagation from the pixelwise loss; upsampling is backwards strided convolution
+* The skip architecture is learned end-to-end to refine the semantics and spatial precision of the output
+* For final predictions, the net combines the predictions from earlier pooling layers to capture finer details
+* Fine-tuning from classification to segmentation gave reasonable predictions for each net
+
+References
+* [Paper](https://arxiv.org/abs/1411.4038)
+
+---
