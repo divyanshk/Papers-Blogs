@@ -204,7 +204,15 @@ References
 ---
 
 ## <a name="memdense"></a>Memory-Efficient Implementation of DenseNets
-* 
+
+* DenseNets are cool; they save up a lo of parameteres by resuse, but their naive implementation can be quadratic with depth in memory
+* If not properly managed, pre-activation batch normaliza- tion [7] and contiguous convolution operations can produce feature maps that grow quadratically with network depth
+* The quadratic memory dependency w.r.t. feature maps originates from intermediate feature maps generated in each layer, which are the outputs of batch normalization and concatenation operations
+* The intermediate feature maps responsible for most of the memory consumption are relatively cheap to compute; frameworks keep these intermediate feature maps allocated in GPU memory for use during back-propagation
+* The authors propose reducing the memory cost by using memory pointers, and shared memory locations; also recomputing the intermediate layers output
+* The recomputation comes at an additional cost, but reduces the memory cost from qudratic to linear
+* Check out the discussion on why pre-activation batch normalization is necessary and useful; and utility of continguous memory allocations for performing convolutions
+* They propose two pre-allocated Shared Memory Storage locations to avoid the quadratic memory growth. During the forward pass, we assign all intermediate outputs to these memory blocks. During back-propagation, we recompute the concatenated and normalized features on-the-fly as needed
 
 References
 * [Paper](https://arxiv.org/pdf/1707.06990.pdf)
