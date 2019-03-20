@@ -213,8 +213,10 @@ References
 * The recomputation comes at an additional cost, but reduces the memory cost from qudratic to linear
 * Check out the discussion on why pre-activation batch normalization is necessary and useful; and utility of continguous memory allocations for performing convolutions
 * They propose two pre-allocated Shared Memory Storage locations to avoid the quadratic memory growth. During the forward pass, we assign all intermediate outputs to these memory blocks. During back-propagation, we recompute the concatenated and normalized features on-the-fly as needed
+* In the code this is implemented using checkpointing
 
 References
 * [Paper](https://arxiv.org/pdf/1707.06990.pdf)
+* [Code](https://github.com/gpleiss/efficient_densenet_pytorch/blob/master/models/densenet.py)
 
 ---
