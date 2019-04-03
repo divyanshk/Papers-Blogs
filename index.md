@@ -12,6 +12,7 @@ layout: default
 [Fully Convolutional Networks for Semantic Segmentation](#fcn)   
 [Improving Sequence-To-Sequence Learning Via Optimal Transport](#seq2seqot)   
 [Memory-Efficient Implementation of DenseNets](#memdense)   
+[Attention Is All You Need](#attn)   
 
 ---
 
@@ -220,3 +221,30 @@ References
 * [Code](https://github.com/gpleiss/efficient_densenet_pytorch/blob/master/models/densenet.py)
 
 ---
+
+## <a name="attn"></a>Attention Is All You Need
+
+* Generally, language models are comprised of RNNs. Recently CNNs have been used for such tasks (ByteNet, ConvS2S). This paper prexents a novel model architecture called Transformer, which is based entirely on self aattention
+* RNNs are inherently serial, not parallelizable; and computatinoaly expensive
+* The number of operations required to relate signals from two arbitrary input and output positions grows in the distane between postitions, linearly for ConvS2S and logarithmically for ByteNet; Transformer based model have constant number of operations
+* Self-attention is an attention mechanism relating different positions of a single sequence in order to compute a representaiton fo the sequence
+* The arch is made up to encoder and decoder stacks, each having modules for sel-attention and point-wise, fully connected layers (similar to 1x1 convolution layers)
+* The decoder takes inputs from the encoder's outputs and the different positions on the query it is decoding (see animation in the Google blog)
+* The output of the attention function is computed as a weighted sum of the values, where the weight assigned to each value is computed by a compatibility function of the query with the corresponding key
+* The attention weights are the relevance of the encoder hidden states (values) in processing the decoder state (query) and are calculated based on the encoder hidden states (keys) and the decoder hidden state (query)
+* The query is the 'word' being decoded; keys are the input sequence, and the output is the sequence with relevance weights, with higher weight on the correct translation for that 'word'
+* The encoder uses source sentence’s embeddings for its keys, values, and queries, whereas the decoder uses the encoder’s outputs for its keys and values and the target sentence’s embeddings for its queries 
+* Multi-head attention lets the aarchitecure paarallelise the attention mechanism; jointly attend to information from different representation subspaces at different positions
+* Encoder uses self attention, where it can attend to all positions in the previous layer of the encoder
+* The architecture includes masking in the decoder to prevent leftward information flow
+* Weight tying is used in the embeddigns and pre-softmax linear transformation layers
+* Positional encoding injects some informaation about the relative or absolute position of the token in the sequence
+
+References
+* [Paper](https://arxiv.org/pdf/1706.03762.pdf)
+* [Blog](http://mlexplained.com/2017/12/29/attention-is-all-you-need-explained/)
+* [Google Blog](https://ai.googleblog.com/2017/08/transformer-novel-neural-network.html)
+* [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
+
+---
+
