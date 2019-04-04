@@ -12,7 +12,8 @@ layout: default
 [Fully Convolutional Networks for Semantic Segmentation](#fcn)   
 [Improving Sequence-To-Sequence Learning Via Optimal Transport](#seq2seqot)   
 [Memory-Efficient Implementation of DenseNets](#memdense)   
-[Attention Is All You Need](#attn)   
+[Attention Is All You Need](#attn)  
+[Analyzing and Improving Representations with the Soft Nearest Neighbor Loss](#soft)    
 
 ---
 
@@ -234,7 +235,7 @@ References
 * The attention weights are the relevance of the encoder hidden states (values) in processing the decoder state (query) and are calculated based on the encoder hidden states (keys) and the decoder hidden state (query)
 * The query is the 'word' being decoded; keys are the input sequence, and the output is the sequence with relevance weights, with higher weight on the correct translation for that 'word'
 * The encoder uses source sentence’s embeddings for its keys, values, and queries, whereas the decoder uses the encoder’s outputs for its keys and values and the target sentence’s embeddings for its queries 
-* Multi-head attention lets the aarchitecure paarallelise the attention mechanism; jointly attend to information from different representation subspaces at different positions
+* Multi-head attention lets the architecure parallelise the attention mechanism; jointly attend to information from different representation subspaces at different positions
 * Encoder uses self attention, where it can attend to all positions in the previous layer of the encoder
 * The architecture includes masking in the decoder to prevent leftward information flow
 * Weight tying is used in the embeddigns and pre-softmax linear transformation layers
@@ -245,6 +246,25 @@ References
 * [Blog](http://mlexplained.com/2017/12/29/attention-is-all-you-need-explained/)
 * [Google Blog](https://ai.googleblog.com/2017/08/transformer-novel-neural-network.html)
 * [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html)
+
+---
+
+## <a name="soft"></a>Analyzing and Improving Representations with the Soft Nearest Neighbor Loss
+
+* The paper studies internal representations with a loss function, to measure the lack of separation of class manifolds in representation space—in other words, the entanglement of different classes
+* They focus on the effect of deliberately maximizing the entanglement of hidden representations in a classifier. Surprisingly, unlike the penultimate layer, hidden layers that perform feature extraction benefit from being entangled, ie, they should not be forced to disentangle data from different classes
+* The entangled representations form class-independent clusters which capture other kinds of similarity that is helpful for eventual discrimination
+* Since entangled representations exhibit a similar- ity structure that is less class-dependent, entangled models more coherently project outlier data that does not lie on the training manifold
+* In particular, data that is not from the training distribution has fewer than the normal number of neighbors in the predicted class
+* The entanglement of class manifolds characterizes how close pairs of representations from the same class are, relative to pairs of representations from different classes. 
+* If we have very low entanglement, then every representation is closer to representations in the same class than it is to representations in different classes; if entanglement is low then a nearest neighbor classifier based on those representations would have high accuracy
+* The soft nearest neighbor loss is the negative log probability of sampling a neighboring point j from the same class as i
+* Cross entropy loss is minimized and entanglement (soft nearest neighbor loss) is maximised as a regularizer
+* This not only promotes spread-out intraclass representations, but also turns out to be good for recognizing data that is not from the training distribution by observing that in the hidden layers, such data has fewer than the normal number of neighbors from the predicted class
+
+
+References
+* [Paper](https://arxiv.org/pdf/1902.01889.pdf)
 
 ---
 
