@@ -14,6 +14,7 @@ layout: default
 [Memory-Efficient Implementation of DenseNets](#memdense)   
 [Attention Is All You Need](#attn)  
 [Analyzing and Improving Representations with the Soft Nearest Neighbor Loss](#soft)    
+[Optimal Transport for Domain Adaptation](#otda)   
 
 ---
 
@@ -267,4 +268,24 @@ References
 * [Paper](https://arxiv.org/pdf/1902.01889.pdf)
 
 ---
+
+## <a name="otda"></a>Optimal Transport for Domain Adaptation
+
+* This paper introduces the theory of optimal transport with application to the problem of domain adaptation, specifically dealing with unsupervised learning
+* The domain adaptation problem boils down to i) finding a transformation of the input data matching the source and target distributions, aand ii) learning a new classifier from the transformed source samples
+* OT distance make a strong case for such problems because i) they can be evaluated directly on empirical estimates of the distruibutions, and ii) they exploit the geometry of the underlying metric space
+* A common stratget to tackle unsupervised domain adaptation is to propose methods that aim at finding representations in which domains match in some sense
+* The paper introduces the theory of OT with the intuition to applying it to domain adaptation
+* Regulaarization is key in solving OT linear problems, as it induces some properties of the solution; reduces overfitting
+* Entropic regularization introduced by Cuturi (and using Sinkhorm computation) is cruical
+* Intuition for such a regularization: since most elements of the transport should be zero with high probability, one can look for a smoother version of the transport, thus lowering its sparsity, by increasing its entropy
+* As the parameter controlling the entropic regularization term increases, the sparsity of the plan decreases aand source points tend to distribute their porobablity masses toward more taarget points
+* The paper provides regularization to the barycentric mapping solution of the transformation mapping source to taaret domains
+* But these only cover basic affine transformations, the paper doesn't provide solutions that can be directly applied to modern deep learning problems
+
+References
+* [Paper](https://arxiv.org/abs/1507.00504)
+
+---
+s
 
