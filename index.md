@@ -15,6 +15,7 @@ layout: default
 [Attention Is All You Need](#attn)  
 [Analyzing and Improving Representations with the Soft Nearest Neighbor Loss](#soft)    
 [Optimal Transport for Domain Adaptation](#otda)   
+[Large Scale Optimal Transport and Mapping Estimation](#largescaleot)   
 
 ---
 
@@ -287,5 +288,22 @@ References
 * [Paper](https://arxiv.org/abs/1507.00504)
 
 ---
-s
 
+## <a name="largescaleot"></a>Large Scale Optimal Transport and Mapping Estimation
+
+* This paper proesents a novel two step approach for the fundamental problem og learning an optimal map from one distribution to another
+* The technique is tested on generative modelling and domain adaptation
+* Cuturi's work on entropic regularization does not scale well, while Wasserstein GANs scale but have to satisfy the non-trivial 1-Lipschitz condition
+* First, the authors propose an algorithm to compute the optimal traansport plan using dual stochastic gradient for solving regularizied dual form of OT
+* Second, they learn an optimal map (Monge map) as a neural network by approximating the barycentric projection of the OT plan obtained in the first step
+* Parameterizing using a neural network allows efficient learning and provides generalization outside the support of the input measure
+* The authors use the regularized OT dual formulation; and provide convergence proofs
+* The barycentric projection wrt the squared Euclidean cost is oftern used as a simple way to recover optimal maps from optimal transport plans
+* The authors claim the restricted application of [Courty et al](#otda) is maily due to the fact that tey consider the primal formulation of the OT problem
+* Source saamples are mapped to the target set through the barycentric projection; a classifier is then learned on the mapped source samples
+* In all experiments conducted, the squared Euclidean distance is used as the ground cost and the barycentric projection is comptued wrt that cost
+
+References
+* [Paper](https://arxiv.org/abs/1711.02283)
+
+---
