@@ -16,6 +16,7 @@ layout: default
 [Analyzing and Improving Representations with the Soft Nearest Neighbor Loss](#soft)    
 [Optimal Transport for Domain Adaptation](#otda)   
 [Large Scale Optimal Transport and Mapping Estimation](#largescaleot)   
+[Autoencoding Variational Bayes](#vae)   
 
 ---
 
@@ -305,5 +306,31 @@ References
 
 References
 * [Paper](https://arxiv.org/abs/1711.02283)
+
+---
+
+## <a name="vae"></a>Autoencoding Variational Bayes
+
+* Encoder encodes x to latent variable z
+* Decoder decodes z to x (reconstruction)
+* At test time, when we want to generate new samples, we simply input values of z ∼ N (0, I) into the decoder; we remove the “encoder"
+* The key idea behind the variational autoencoder is to attempt to sample values of z that are likely to have produced X, and compute P(X) just from those
+* We need a new function Q(z|X) which can take a value of X and give us a distribution over z values that are likely to produce X
+![equation1](/images/vae_eq1.png)
+* This equation serves is the core of the variational autoencoder
+* We want to maximise logP(X) and the error term, which makes Q produce z’s that can reproduce a given X
+* The Q function takes the form of a Gaussian with mean aand covariance as outputs used to model the distribution
+![equation2](/images/vae_eq2.png)
+* This equation refers to the last term of the VAE equation, where k is the dimensionality of the distribution
+* As is standard in stochastic gradient descent, we take one sample of z and treat P(X\|z) for that z as an approximation of the first term on the right
+* To prevent the sample from Q(z|X) in the first term on the right during the backprop stage, we use the reparamaterization trick
+![equation3](/images/vae_eq3.png)
+* The second term on the left can be viewed as a regularization term, much like the sparsity regularization in sparse autoencoders
+* Refer to figure 4 in the tutorial linked below for a pictorial explanation
+
+References
+* [Paper](https://arxiv.org/abs/1312.6114)
+* [Tutorial on VAE](https://arxiv.org/abs/1606.05908)
+* Deep Learning lab slides
 
 ---
