@@ -18,6 +18,7 @@ layout: default
 [Large Scale Optimal Transport and Mapping Estimation](#largescaleot)   
 [Autoencoding Variational Bayes](#vae)   
 [Label Efficient Learning of Transferable Representations across Domains and Tasks](#transfer)   
+[Stacked What-Where Auto-Encoders](#stackedAE)   
 
 ---
 
@@ -355,5 +356,24 @@ References
 
 References
 * [Paper](https://arxiv.org/abs/1712.00123)
+
+---
+
+## <a name="stackedAE"></a>Stacked What-Where Auto-Encoders
+
+* The paper provides a straightforward convolutional network based auto-encoder model which can be used in supervised, unsupervised or semi-supervised setting
+* 'What' refers to information flowing from one layer to the other, input is encoded using conv layers; then decoded using deconv layers
+* 'Where' refers to how the max-pooling layers choose the output; this information is laterally passed to devon layers to assist in reconstructing the features
+* The “what” variables inform the next layer about the content with incomplete information about position, while the “where” variables inform the corresponding feed-back decoder about where interesting (dominant) features are located
+* The reconstruction penalty at each layer constrains the hidden states of the feed-back pathway to be close to the hidden states of the feed-forward pathway
+* This model is particularly suitable when one is faced with a large amount of unlabeled data and a relatively small amount of labeled data
+* $$\mathcal{L}_{NLL}$$ is the discriminative loss, $$\mathcal{L}_{L2rec}$$ is the reconstruction loss at the input level and $$\mathcal{L}_{L2M}$$ charges intermediate reconstruction terms. $$\lambda$$’s weight the losses against each other
+![equation1](/images/stackedAE_eq1.png) 
+* The model uses negative log-likelihood (NLL) loss for classification and L2 loss for reconstructions
+* The SWWAE provides a unified framework for learning with all three learning modalities, all within a single architecture and single learning algorithm, i.e. stochastic gradient descent and backprop
+* For semi-supervised learning, all three terms of the loss are active; the gradient contributions from the Deconvnet can be interpreted as an information preserving regularize
+
+References
+* [Paper](https://arxiv.org/pdf/1506.02351.pdf)
 
 ---
