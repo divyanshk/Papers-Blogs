@@ -17,6 +17,7 @@ layout: default
 [Optimal Transport for Domain Adaptation](#otda)   
 [Large Scale Optimal Transport and Mapping Estimation](#largescaleot)   
 [Autoencoding Variational Bayes](#vae)   
+[Label Efficient Learning of Transferable Representations across Domains and Tasks](#transfer)   
 
 ---
 
@@ -332,5 +333,27 @@ References
 * [Paper](https://arxiv.org/abs/1312.6114)
 * [Tutorial on VAE](https://arxiv.org/abs/1606.05908)
 * Deep Learning lab slides
+
+---
+
+## <a name="transfer"></a>Label Efficient Learning of Transferable Representations across Domains and Tasks
+
+* The authors present a novel method to tackle domain shift with a domain adversarial loss, and generalize the embedding a different task using a metric learning based approach
+* The framework is applied on transfer learning task from image object recognition to video action recognition
+* Given a large label source dataset with annotations for a task A, they seen to transfer knowledge to a sparsely labeled target domain with possibly new task B
+* $$\mathcal{X}^{S}$$ : source labeled data, $$\mathcal{X}^{T}$$ : target labeled data, $$\tilde{\mathcal{X}}^{T}$$ : target unlabeled data
+* Adversarial discriminative models focus on aligning embedding feature representations of target domain to source domain
+* The proposed model jointly optimizes over a target supervised loss $$\mathcal{L}_{sup}$$, a domain transfer objective $$\mathcal{L}_{DT}$$ and a semantic transfer objective $$\mathcal{L}_{ST}$$
+![equation1](/images/transfer_eq1.png)
+* The domian adversarial loss model aligns multiple layers through a multi layer discriminator
+* In particular, a domain discriminator, D(·), is trained to classify whether a particular data point arises from the source or the target domain
+* Simultaneously, the target embedding function $$E^t(x^t)$$ (defined as the application of layers of the network) is trained to generate the target representation that cannot be distinguished from the source domain representation by the domain discriminator
+* $$\mathcal{L}_{ST}$$ transfers information from a labeled set of data to an unlabeled set of data by minimizing the entropy of the softmax (with temperature) of the similarity vector between an unlabeled point and all labeled points
+* Entropy minimization is widely used in unsupervised and semi-supervised learning by encouraging low density separation between clusters or classes
+* For semantic transfer within the target domain, the authors utilize the metric-based cross entropy loss between labeled target examples to stabilize the training and guide the unsupervised semantic transfer
+![equation2](/images/transfer_eq2.png)
+
+References
+* [Paper](https://arxiv.org/abs/1712.00123)
 
 ---
