@@ -20,6 +20,7 @@ layout: default
 [Label Efficient Learning of Transferable Representations across Domains and Tasks](#transfer)   
 [Stacked What-Where Auto-Encoders](#stackedAE)   
 [Unsupervised Data Augmentation](#unsupdaug)   
+[Towards Federated Learning at Scale: System Design](#fl)    
 
 ---
 
@@ -406,5 +407,23 @@ where $$q(\hat{x} \| x)$$ is a data augmentation transformation
 
 References
 * [Paper](https://arxiv.org/pdf/1904.12848.pdf)
+
+---
+
+## <a name="fl"></a>Towards Federated Learning at Scale: System Design
+
+* Federated Learning (FL) (McMahan et al., 2017) is a distributed machine learning approach which enables training on a large corpus of decentralized data residing on devices like mobile phones
+* The system enables one to train a deep neural network, using TensorFlow on data stored on the phone which will never leave the device; the weights are combined in the cloud with Federated Averaging, constructing a global model which is pushed back to phones for inference
+* An implementation of Secure Aggregation (Bonawitz et al., 2017) ensures that on a global level individual updates from phones are uninspectable
+* Each round between the servers and the devices takes places in three rounds - selection, configuration and reporting
+* The system used 'pace steering' to regulate the flow of devices connections; it enables the FL server both to scale down to handle small FL populations as well to scale up to very large FL populations; also help in avoiding excessive activity during peak hours
+* The server is based on the actor concurrency model allowing it to scale to millions of devices; it also takes cares of dynamic resource management and load balancing
+* All actors keep their state in memory and are ephemeraal; this improves scalability by removing the latency incurred by distributed storge
+* Bonawitz et al. (2017) introduced Secure Aggregation, a Secure Multi-Party Computation protocol that uses encryp- tion to make individual devices’ updates uninspectable by a server, instead only revealing the sum after a sufficient num- ber of updates have been received
+* The authors imploy Secure Aggregation as a privacy enhancement to the FL service
+* To prevent the SA costs from growing with the number of users, the system runs an instance of Secure Aggregation on each Aggregator actor to aggregate inputs from that Aggregator’s devices into an intermediate sum
+
+References
+* [Paper](https://arxiv.org/abs/1902.01046)
 
 ---
