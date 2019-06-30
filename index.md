@@ -20,7 +20,8 @@ layout: default
 [Label Efficient Learning of Transferable Representations across Domains and Tasks](#transfer)   
 [Stacked What-Where Auto-Encoders](#stackedAE)   
 [Unsupervised Data Augmentation](#unsupdaug)   
-[Towards Federated Learning at Scale: System Design](#fl)    
+[Towards Federated Learning at Scale: System Design](#fl)   
+[BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)       
 
 ---
 
@@ -425,5 +426,30 @@ References
 
 References
 * [Paper](https://arxiv.org/abs/1902.01046)
+
+---
+
+## <a name="bert"></a>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
+
+* BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left aand right context in all layers
+* Two existing strategie for applying pre-training language representations to downstream tasks: feature-based aand fine-tuning
+* ELMo uses task-specific architectures that include the pre-trainined representations as additional features; OpenAI GPT is trained on down-stream tass by simply fine-tuning ALL pretrained parameters
+* The major limiation in standard language models is that they are unidirectional, which limits the choice of architectures that can be used for pre-training
+* This work improves the fine-tuning based approach
+* Words can “see themselves” in a bidirectional encoder
+* To overcome the unidirectionality constraint, they use a masked language model (MLM)
+* MLM randomly masks some of the tokens from the input, and the objective is to predict the original vocabulary id of the masked work based on its conetxt; it lefts the representation to fure the left and right context, which allows pretraining a bidirectinal transformer
+* Also the authors propose using "next sentence prediction" task that jointly pretrains text-pair representations
+* For a given toke, its input representation is contructed by summing the corresponding token, segment, and position embeddings
+* If we used [MASK] 100% of the time the model wouldn’t necessarily produce good token representations for non-masked words
+* NSP uses a binary classfication procedure to help the model learn about next sentenses and more context
+* The model is fine-tuned for every downstream task
+
+References
+* [Paper](https://arxiv.org/abs/1810.04805)
+* [Blog](http://mlexplained.com/2019/01/07/paper-dissected-bert-pre-training-of-deep-bidirectional-transformers-for-language-understanding-explained/)
+* [Blog](https://www.lyrn.ai/2018/11/07/explained-bert-state-of-the-art-language-model-for-nlp/)
+* [Blog](http://jalammar.github.io/illustrated-bert/)
+* [Blog](https://nlp.stanford.edu/seminar/details/jdevlin.pdf)
 
 ---
