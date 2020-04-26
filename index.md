@@ -21,8 +21,8 @@ layout: default
 [Stacked What-Where Auto-Encoders](#stackedAE)   
 [Unsupervised Data Augmentation](#unsupdaug)   
 [Towards Federated Learning at Scale: System Design](#fl)   
-[BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)
-[Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)       
+[BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)   
+[Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
 
 ---
 
@@ -464,7 +464,6 @@ References
     * scalable to millions of users
     * multiple notif channels, multiple ranking modules, etc
 * Weekly Notification Budget: pre-calculted max notification per user
-    * 
 * Budget Pacer: even pacing, space out notifs, minimize user fatigue
 * Ranker: after pacing, choose the best notifs from the eligible notifs, pCTR based prediciton
 * Delivery: send the notif at the time the user is most likely to engage, track the user response which is used to train models
@@ -476,12 +475,12 @@ References
 * Volume optimization is treated as contrained optimization problem, with given a total number of notifs, try to figure out the optimal distribution amongst users such that overall objective is maximised  
 * While choosing the objective function, important how to model the long term effect of notifs towards the target metric, which should consider both positive and negative actions from the user
 * To directly optimize for site engagement, we should send more notification to user with high incremental value (utlity), instead to those with highest CTR.
-* The utility is calculated as $$(1 - p(a_{organic}|u) * p_{CTR}(u)$$ to send notifs to those who wouldn't come to the system organically
-* The incremental value of a user $$u$$'s activity $$a$$ for the notification $$k+1$$ is $$p(a|u, k+1) - p(a|u,k)$$
+* The utility is calculated as $$(1 - p(a_{organic}\|u) * p_{CTR}(u)$$ to send notifs to those who wouldn't come to the system organically
+* The incremental value of a user $$u$$'s activity $$a$$ for the notification $$k+1$$ is $$p(a\|u, k+1) - p(a\|u,k)$$
 * It's important to model in the negative actions of a user, along with the positive actions.
 * Following a multu-objective optimization system to upper bound the negative actions, and lower bound the positive actions can have issues because different user cohorts behave differently, and such fixed caps may not capture everything
 * Consider every notif volume causes a certain user to do a certain action, and this action reflects on the overall user activity
-* This can be modelled as an MDP, where each action $$s$$ represents a state, $$p(s|u, k_u)$$ is the state transition probability, and $$p(a|u, k_u, s)$$ is the reward function at state $$s$$.
+* This can be modelled as an MDP, where each action $$s$$ represents a state, $$p(s\|u, k_u)$$ is the state transition probability, and $$p(a\|u, k_u, s)$$ is the reward function at state $$s$$.
 * Ideally, each week could be treated as a time step and select a volume for the week $$k_u$$ such that the sum of the discounted rewards over the future week is minimized. But this is not very tractable because of unknown user behavior.
 * If a user unsubscribes, their long term effect on activity can be modelled  
 * The final objective function uses 3 models, subscribed activity prediction, unsubscribiton model, unsubscribed long term activity model.
