@@ -23,6 +23,7 @@ layout: default
 [Towards Federated Learning at Scale: System Design](#fl)   
 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)   
 [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
+[Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 
 ---
 
@@ -488,5 +489,46 @@ References
 
 References
 * [Paper](https://labs.pinterest.com/user/themes/pin_labs/assets/paper/notifications-kdd18.pdf)
+
+---
+
+## <a name="class_balanced_loss"></a>Class-Balanced Loss Based on Effective Number of Samples
+
+* This paper describes how to improve the loss function to take into account the long tail of classes that are not very well represented in the dataset.
+* This paper has good foundational information about weighting and sampling techniques; their contribution is two fold
+    * framework to study "effective number of samples"
+    * design a "class balanced term" and incorporate into the loss function
+* Two common strategies used to help with imbalanced class of data
+    * re-sampling
+        * number of samples are adjusted by over-sampling or under-sampling
+        * (interestingly, there is literature showing under-sampling, i.e. reducing the number of excess samples works better than over-sampling)
+    * cost sensitive re-weighting
+         * influence the loss function by assigning relatively higher costs to examples from minor classes
+         * (check out work on assigning higher weights to "harder" examples - by this can have drawbacks because "harder" samples don't have to have less training data, and "harder" samnples could also result from label inconsistency, bad training data, or in general noisy data)
+* The typical strategy for re-weighting is to assign weights inversely proportional to the class frequency.
+* An improvement on that, is the smoothing version that empricially re-samples data to be inversely propertional to the square root of class frequency.
+* This paper tries to provide a holistical framework for re-weighting, by create a balancing term that is inversely proportional to the "effective number of samples of a class" and updating the loss function for the class by that term.
+    * at one end of the spectrum is no weighting, the other end is inverse class frequency based loss weighting
+    * this paper suggests using a hyperparameter to find the best performant 'middle ground'
+* The frameworks is based on random covering problem - goal is to cover a large set by a sequence of iid random sets.
+    * key idea us to associate each sample with a small neighboring region instead of a single point
+    * capture diminishing marginal benefits by using more data points of a class
+* Bunch of assumptions were made before coming up with the formulation, and it was proved by induction (clever)
+* Effective number of samples for a class are defined by a hyperparameter $$\beta$$, where $$N$$ is the total number of samples for the class overall, $$n$$ is the number of samples in the ground truth training data
+
+$$
+E_n = (1 - \beta^n) / (1 - \beta), where \beta = (N - 1)/N
+$$
+
+* The loss thus becomes, where $$y$$ is one of the class, $$n_y$$ is the number of samples in the class $$y$$, and $$\beta \in [0,1)$$
+
+$$
+CB(p, y) = \frac{1}{E_n} \mathcal{L}(p,y) = \frac{1 - \beta}{1 - \beta^{n_y}}\mathcal{L}(p,y)
+$$
+
+* They tested on multiple datasets, changed $$\beta$$ and measured net performance. For some datasets, higher $$\beta$$ worked well - meaning an inverse class frequency weighting would work well; in some other datasets that didn't work well and needed a smaller $$\beta$$ that has smaller weights across classes.
+
+References
+* [Paper](https://arxiv.org/abs/1901.05555)
 
 ---
