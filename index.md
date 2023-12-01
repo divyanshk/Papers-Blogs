@@ -24,6 +24,7 @@ layout: default
 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)   
 [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
 [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
+[Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)    
 
 ---
 
@@ -530,5 +531,32 @@ $$
 
 References
 * [Paper](https://arxiv.org/abs/1901.05555)
+
+---
+
+## <a name="mmoe"></a>Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts
+
+* This work introduces a multi-task learning approach, MMoE, which adds a MoE structure to multi-task learning by sharing the expert submodels across all tasks, while also having a gating network trained to optimize each task.
+* It does so by using a multi-gate structure which gates all the tasks, essentially enabling sharing between tasks.
+* The general evolution of production netural nets can be thought of as: sparseNN -> SparseNN + moe -> mtml -> mtml + moe -> mtml + mmoe
+* The premise of this paper is that when modeling different tasks, the inherent conflicts from task different can actually harm the predictions of at least some of the tasks, particularly when model parameters are extensively shared among all tasks
+* An interesting point is how the authors conduct a synthetic experiment where we can measure and control task relatedness by their Pearson correlation.
+* The basic building block here the concept of moe - which selects subnets (experts) based on the input at training and serving time. So, that not only improves modeling but also lowers computational costs
+* A basic multi model can be represented as $$y_k = h^k (f(x))$$ where k are the layers, bottom shared layer is modeled by function f and each tower is functino h
+* Orignal MoE representation becomes $$y = \sum^N_{i=1} {g(x)}_i f_i(X)$$ where sum of all g equal 1, the i-th logit of the output of g(x) indicates the probability for epert $$f_i$$.
+    * The gating network д produces a distribution over the n experts based on the input, and the final output is a weighted sum of the outputs of all experts.
+* In MMoE the output of task k is
+
+$$
+y_k = h^k (f^k(x)),   
+\quad where \quad  f^k (x) = \sum^n_{i=1} g^k(x)_i f_i(x)
+$$
+
+* Key takeaway: try using a gating network instead of a 'switch' like gate based on the input.
+
+
+
+References
+* [Paper](https://dl.acm.org/doi/pdf/10.1145/3219819.3220007)
 
 ---
