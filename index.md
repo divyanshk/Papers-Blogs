@@ -2,6 +2,7 @@
 layout: default
 ---
 
+[FrugalGPT: How to use LLM while reducing cost and improving performance](#frugalgpt)  
 [Mathematics of Deep Learning](#vidal)  
 [Wasserstein GAN](#wgan)   
 [Why and How of Nonnegative Matrix Factorization](#nmf)   
@@ -25,9 +26,34 @@ layout: default
 [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
 [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)    
-
 ---
 
+## <a name="frugalgpt"></a> FrugalGPT: How to use LLM while reducing cost and improving performance
+* The premise of this paper is that we can't call the big LLM for everything, all the time
+* We need a way to reduce the costs per task solved by LLMs, and do that by maintaining quality
+* In a nutshell, the contribution of the paper is proposing an "ensemble" style approach to utilizing LLMs - have many LLM API handy, figure out when to call which one, reduce costs per call by optimizing on prompt size or using a cache
+* They model this problem as an optimization problem - with the goal to maximize the performance while constraining the budget 
+
+$$ max \:\: {\mathbb{E}_{(q,a) \in (QxA)} [r(a, \hat{a}(s,q))]} \:\: with \:\: \mathbb{E}_{(q,a) \in (QxA)} [c(s,q)] \leq b$$
+
+* Q is the query space, A is the answer space, $$\hat{a}$$ is the LLM's answer, b is the budget constraint and c is the cost per query using strategy s
+* The three strategies for cost reduction: prompt adaptation, LLM approximation and LLM cascade
+* Prompt adaptation is reducing the prompt length to retain its value but minimizing the input cost to the LLM API (cost is linear to prompt size)
+* LLM approximation: make use of a "similar" LLM if the LLM api is quite expensive to call - use a completion cache (dont ask LLM stuff for which you already have an answer)
+  * this is a simple but can be very powerful: given all queries in the world, it would be a long tailed distribution, but the head load would be ripe for savings as we can save the results of those queries in a cache which serves already asked answer - similar to any search engine or RecSys product
+* Another example of LLM approximation is to fine tune a smaller model
+* LLM cascade is using a scorer and a router. Say you have a chain of LLMs with 'smaller'/'cheaper' ones the first 
+* Score the output of the first one using a scorer, judge it against a threshold and either use that answer or move to the next bigger LLM in the chain
+  * Scoring function can be obtained by training a simple regression model that learns whether a generation is correct from the query and a generated answer
+* Learning the list of LLMs and the thresholds can be modeled as a constraint optimization problem.
+* There are restrictions to these approaches which make the problem nuanced, but overall is a good direction of work that can be leveraged by many small/medium players.
+* The authors ran experiments which showed FrugalGPT can match the perf of a big LLM wit upto 98% savings or improve the accuracy by 4% with same cost. Impressive.
+
+
+References
+* [Paper](https://arxiv.org/abs/2305.05176)
+
+---
 ## <a name="vidal"></a>Mathematics of Deep Learning
 
 * The paper talks about the principles of mathematics which underline the field
@@ -553,8 +579,6 @@ y_k = h^k (f^k(x)),
 $$
 
 * Key takeaway: try using a gating network instead of a 'switch' like gate based on the input.
-
-
 
 References
 * [Paper](https://dl.acm.org/doi/pdf/10.1145/3219819.3220007)
