@@ -2,32 +2,51 @@
 layout: default
 ---
 
-[FrugalGPT: How to use LLM while reducing cost and improving performance](#frugalgpt)  
-[Mathematics of Deep Learning](#vidal)  
-[Wasserstein GAN](#wgan)   
-[Why and How of Nonnegative Matrix Factorization](#nmf)   
-[DenseNet](#dense)  
-[Learning Generative Models with Sinkhorn Divergences](#sinkhorn)   
-[Improving GANs Using Optimal Transport](#otgan)   
-[Mask R-CNN](#maskrcnn)   
-[Fully Convolutional Networks for Semantic Segmentation](#fcn)   
-[Improving Sequence-To-Sequence Learning Via Optimal Transport](#seq2seqot)   
-[Memory-Efficient Implementation of DenseNets](#memdense)   
-[Attention Is All You Need](#attn)  
-[Analyzing and Improving Representations with the Soft Nearest Neighbor Loss](#soft)    
-[Optimal Transport for Domain Adaptation](#otda)   
-[Large Scale Optimal Transport and Mapping Estimation](#largescaleot)   
-[Autoencoding Variational Bayes](#vae)   
-[Label Efficient Learning of Transferable Representations across Domains and Tasks](#transfer)   
-[Stacked What-Where Auto-Encoders](#stackedAE)   
-[Unsupervised Data Augmentation](#unsupdaug)   
-[Towards Federated Learning at Scale: System Design](#fl)   
-[BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)   
-[Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
-[Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
-[Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)    
+1. [LoRA: Low-Rank Adaptation of Large Language Models](#lora)   
+1. [FrugalGPT: How to use LLM while reducing cost and improving performance](#frugalgpt)  
+1. [Mathematics of Deep Learning](#vidal)  
+1. [Wasserstein GAN](#wgan)   
+1. [Why and How of Nonnegative Matrix Factorization](#nmf)   
+1. [DenseNet](#dense)  
+1. [Learning Generative Models with Sinkhorn Divergences](#sinkhorn)   
+1. [Improving GANs Using Optimal Transport](#otgan)   
+1. [Mask R-CNN](#maskrcnn)   
+1. [Fully Convolutional Networks for Semantic Segmentation](#fcn)   
+1. [Improving Sequence-To-Sequence Learning Via Optimal Transport](#seq2seqot)   
+1. [Memory-Efficient Implementation of DenseNets](#memdense)   
+1. [Attention Is All You Need](#attn)  
+1. [Analyzing and Improving Representations with the Soft Nearest Neighbor Loss](#soft)    
+1. [Optimal Transport for Domain Adaptation](#otda)   
+1. [Large Scale Optimal Transport and Mapping Estimation](#largescaleot)   
+1. [Autoencoding Variational Bayes](#vae)   
+1. [Label Efficient Learning of Transferable Representations across Domains and Tasks](#transfer)   
+1. [Stacked What-Where Auto-Encoders](#stackedAE)   
+1. [Unsupervised Data Augmentation for Consistency Training](#unsupdaug)   
+1. [Towards Federated Learning at Scale: System Design](#fl)   
+1. [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)   
+1. [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
+1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
+1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)   
+{: reversed="reversed"}
+
 ---
 
+## <a name="lora"></a> LoRA: Low-Rank Adaptation of Large Language Models
+* This paper proposes a technique to reduce the time and memory it takes to perform full-fine-tuning of a LLM, by injecting trainable additional weights instead of performing a full parameter fune-tuning.
+* These are trainable rank decomposition matrices injected into each layer of the transformer architecture.
+* Inspiration from Li et al. (2018a); Aghajanyan et al. (2020) which show that the learned over-parametrized models in fact reside on a low intrinsic dimension. We hypothesize that the change in weights during model adaptation also has a low “intrinsic rank”.
+* What does it mean to have low intrinsic dimension? [Answer](https://g.co/gemini/share/59661abbec68)
+* The pretrained model weights stay common, while we only replace the low rank matrices A, B for each task - thus creating LoRA modeules for different tasks.
+* See Section 6 for well knows works on making transfer learning / model adaptation more paratmeter and compute efficient.
+  * Two main ones: adding adaptor layers, optimizing input layer activations
+* W_new = W + dW = W + A.B where A and B are low rank decompositions of the weight update
+* Through experiments, authors conclude that it is preferable to adapt more weight matrices (Q, K, V, O) than adapting a single type of weights with a larger rank.
+
+References
+* [paper](https://arxiv.org/abs/2106.09685)
+* [blog](https://sebastianraschka.com/blog/2023/llm-finetuning-lora.html)
+
+---
 ## <a name="frugalgpt"></a> FrugalGPT: How to use LLM while reducing cost and improving performance
 * The premise of this paper is that we can't call the big LLM for everything, all the time
 * We need a way to reduce the costs per task solved by LLMs, and do that by maintaining quality
@@ -410,7 +429,7 @@ References
 
 ---
 
-## <a name="unsupdaug"></a>Unsupervised Data Augmentation
+## <a name="unsupdaug"></a>Unsupervised Data Augmentation for Consistency Training
 
 * This work proposes to apply data augmentation to unlabeled data in a semi-supervised learning setting
 * Smoothness enforcing methods simply regularize the model's prediction to be less sensitive to small perturbations applied to examples (labeled or unlabeled)
