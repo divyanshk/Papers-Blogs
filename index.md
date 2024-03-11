@@ -41,6 +41,7 @@ layout: default
   * Two main ones: adding adaptor layers, optimizing input layer activations
 * W_new = W + dW = W + A.B where A and B are low rank decompositions of the weight update
 * Through experiments, authors conclude that it is preferable to adapt more weight matrices (Q, K, V, O) than adapting a single type of weights with a larger rank.
+* Interestingly, authors measure subspace similarity to find that lower rank value is sufficient - i.e. increasing r doesn't cover a more meaningful subspace.
 
 References
 * [paper](https://arxiv.org/abs/2106.09685)
