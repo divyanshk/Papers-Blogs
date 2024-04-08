@@ -2,6 +2,7 @@
 layout: default
 ---
 
+1. [Learning Transferable Visual Models From Natural Language Supervision](#clip)
 1. [LoRA: Low-Rank Adaptation of Large Language Models](#lora)   
 1. [FrugalGPT: How to use LLM while reducing cost and improving performance](#frugalgpt)  
 1. [Mathematics of Deep Learning](#vidal)  
@@ -28,6 +29,30 @@ layout: default
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)   
 {: reversed="reversed"}
+
+---
+## <a name="clip"></a> Learning Transferable Visual Models From Natural Language Supervision
+* This paper demonstrates how to use text to provide supervision to image learning methods for generating SOTA image representations in an efficient and scalable way
+  * Specicially, this is done by predicting which caption goes with which image
+* The key impact is to be able to do tranfer learning to downstream tasks in a zero-shot manner, just by leveraging natural language to reference learned visual concepts
+* The contributions are
+   * create a new dataset of 400 million (image, text) pairs and 
+   * demonstrate that a simplified version of ConVIRT (Zhang et al 2020) trained from scratch, called CLIP, for Contrastive Language-Image Pre-training, is an efficient method of learning from natural language supervision
+   * study the scalability of CLIP by training a series of eight models spanning almost 2 orders of magnitude of compute and observe that transfer performance is a smoothly predictable function of compute
+   * CLIP like GPT learns to perform a wide set of tasks during pre-training (OCR, geo-localization, action recognition etc)
+* Authors create a large dataset which is key to this research
+  * 400M (image, text) pairs collected from a variety of publicly available sources on the internet
+* Researchers found traning efficieny was key to successfully scaling natural language supervision, and selected pre-training method based on this metric
+* Key here was replacing predictive objective for a contrastive objective
+  * i.e. predicting only which text as a whole is paired with which image and not the exact words of that text
+* Given a batch of N (image, text) pairs, CLIP is trained to predict which of the N × N possible (image, text) pairings across a batch actually occurred.
+  * To do this, CLIP learns a multi-modal embedding space by jointly training an image encoder and text encoder to maximize the cosine similarity of the image and text embeddings of the N real pairs in the batch while minimizing the cosine similarity of the embeddings of the N2 − N incorrect pairings.
+    * See InfoNCE loss
+* Authors eplain how the simplified the training process compared to other contrastive training techniques (check them out)
+* Authors explain the different model architecutures used, and the training recipie
+
+References
+* [paper](https://arxiv.org/pdf/2103.00020.pdf)
 
 ---
 
