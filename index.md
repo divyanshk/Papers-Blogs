@@ -42,14 +42,20 @@ layout: default
    * CLIP like GPT learns to perform a wide set of tasks during pre-training (OCR, geo-localization, action recognition etc)
 * Authors create a large dataset which is key to this research
   * 400M (image, text) pairs collected from a variety of publicly available sources on the internet
-* Researchers found traning efficieny was key to successfully scaling natural language supervision, and selected pre-training method based on this metric
+  * To cover a broad set of concepts, authors collected 500K queries and sourced 20k pairs per query
+* Researchers found training efficieny was key to successfully scaling natural language supervision, and selected pre-training method based on this metric
 * Key here was replacing predictive objective for a contrastive objective
   * i.e. predicting only which text as a whole is paired with which image and not the exact words of that text
+* Learning from natural language also has an important advantage over most unsupervised or self-supervised learning approaches in that it doesn’t “just” learn a representation but also connects that representation to language which enables flexible zero-shot transfer
 * Given a batch of N (image, text) pairs, CLIP is trained to predict which of the N × N possible (image, text) pairings across a batch actually occurred.
   * To do this, CLIP learns a multi-modal embedding space by jointly training an image encoder and text encoder to maximize the cosine similarity of the image and text embeddings of the N real pairs in the batch while minimizing the cosine similarity of the embeddings of the N2 − N incorrect pairings.
     * See InfoNCE loss
 * Authors eplain how the simplified the training process compared to other contrastive training techniques (check them out)
-* Authors explain the different model architecutures used, and the training recipie
+* Authors explain the different model architecutures used, and the training recipie used to train the model
+* While much research in the field of unsupervised learning focuses on the representation learning capabilities of machine learning systems, we motivate studying zero-shot transfer as a way of measuring the tasklearning capabilities of machine learning systems
+* Authors evaluate the task learning ability using few shot transfer, as well as the quality of representation learning using a linear classifier. 
+* Combining CLIP with self-supervision (Henaff, 2020; Chen et al., 2020c) and self-training (Lee; Xie et al., 2020) methods is a promising direction given their demonstrated ability to improve data efficiency over standard supervised learning.
+
 
 References
 * [paper](https://arxiv.org/pdf/2103.00020.pdf)
