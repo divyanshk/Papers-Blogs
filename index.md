@@ -2,7 +2,8 @@
 layout: default
 ---
 
-1. [Learning Transferable Visual Models From Natural Language Supervision](#clip)
+1. [Demystifying CLIP data](#metaclip)   
+1. [Learning Transferable Visual Models From Natural Language Supervision](#clip)   
 1. [LoRA: Low-Rank Adaptation of Large Language Models](#lora)   
 1. [FrugalGPT: How to use LLM while reducing cost and improving performance](#frugalgpt)  
 1. [Mathematics of Deep Learning](#vidal)  
@@ -31,6 +32,24 @@ layout: default
 {: reversed="reversed"}
 
 ---
+
+## <a name="metaclip"></a> Demystifying CLIP data
+* This paper attempts to reveal CLIP’s data curation, making the entire data pipeline open source.
+* MetaClip is trained on training data coming from a highly curated metadata (i.e. metadata refers to "queries")
+  * openAI's clip had 500k queries from which the data was selected
+* Curating with metadata and balancing are essential for good data quality, significantly outperforming the use of raw data.
+* Paper claims that the essence of success of openAI's clip lies in their data, specifically in their data curation strategy
+* The above is apparent because
+  * Clip training starts from scratch, avoiding the introduction of biases through filters
+  * CLIP’s curation process balances the data distribution over metadata, maximizing signal preservation while mitigating, rather than removing, noise in the data
+* The key secret behind OpenAI CLIP’s curation is to balance the counts of matched entries (ie keep 20K per query)
+* This paper performs many empirical data analysis to prove equal or better performance than openAI's clip
+
+References
+* [paper](https://arxiv.org/pdf/2309.16671)
+
+---
+
 ## <a name="clip"></a> Learning Transferable Visual Models From Natural Language Supervision
 * This paper demonstrates how to use text to provide supervision to image learning methods for generating SOTA image representations in an efficient and scalable way
   * Specicially, this is done by predicting which caption goes with which image
@@ -42,7 +61,7 @@ layout: default
    * CLIP like GPT learns to perform a wide set of tasks during pre-training (OCR, geo-localization, action recognition etc)
 * Authors create a large dataset which is key to this research
   * 400M (image, text) pairs collected from a variety of publicly available sources on the internet
-  * To cover a broad set of concepts, authors collected 500K queries and sourced 20k pairs per query
+  * To cover a broad set of concepts, authors collected (image, text) pairs where text is one of 500K queries, and sourced 20k pairs per query
 * Researchers found training efficieny was key to successfully scaling natural language supervision, and selected pre-training method based on this metric
 * Key here was replacing predictive objective for a contrastive objective
   * i.e. predicting only which text as a whole is paired with which image and not the exact words of that text
