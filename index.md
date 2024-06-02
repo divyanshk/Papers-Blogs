@@ -2,6 +2,7 @@
 layout: default
 ---
 
+1. [ImageBind: One Embedding Space To Bind Them All](#imagebind)   
 1. [Scaling (Down) Clip: A Comprehensive Analysis of Data, Architecture, and Training Strategies](#scalingclipdown)   
 1. [Demystifying CLIP data](#metaclip)   
 1. [Learning Transferable Visual Models From Natural Language Supervision](#clip)   
@@ -31,6 +32,27 @@ layout: default
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)   
 {: reversed="reversed"}
+
+---
+
+## <a name="imagebind"></a> ImageBind: One Embedding Space To Bind Them All
+* This paper presents an approach (imagebind) to learn a joint embedding across six different modalities - images, text, audio, depth, thermal, and IMU data
+  * Main idea is that only image-paired data is sufficient to bind the modalities together
+* Premise:  A major obstacle in learning a true joint embedding is the absence of large quantities of multimodal data where all modalities are present together
+* ImageBind does not require explicit paired data between all modalities and instead leverages image as a natural weak supervision for unifying modalities
+* An essential concept here is of Feature Alignment - where different modalities get aligned in the same embedding space allowing for zero/few shot learning, and learning without explicit pairs data in training
+* The authors use a separate encoder for each modality, and use InfoNCE loss for alignment between I (image) and M (other modalities)
+  * Images are used as bridges for alignment across different modalities
+  * This is the same loss as CLIP
+*  The experiments done in the paper initialize the enocders with pretrained models like CLIP
+* Cool result: Embedding space arithmetic where authors add image and audio embeddings, and use them for image retrieval. The composed embeddings naturally capture semantics from different modalities
+* Authors claim embeddings from different modalities can boe interchanged - because each embedding space captures semantic meaning transferable to other modalities
+  * for eg, Upgrading text-based detectors to audio-based, or Upgrading text-based diffusion models to audio-based
+* Using a stronger ViT-H (v ViT-B) authors show that stronger visual features learned can improve recognition performance even on non-visual modalities
+* Interesting note: batch size used in training varies by modality, depending on the size and complexity of the corresponding pretraining datasets 
+
+References
+* [Paper](https://arxiv.org/pdf/2305.05665)
 
 ---
 ## <a name="scalingclipdown"></a> Scaling (Down) Clip: A Comprehensive Analysis of Data, Architecture, and Training Strategies
