@@ -2,6 +2,7 @@
 layout: default
 ---
 
+1. [Scaling (Down) Clip: A Comprehensive Analysis of Data, Architecture, and Training Strategies](#scalingclipdown)   
 1. [Demystifying CLIP data](#metaclip)   
 1. [Learning Transferable Visual Models From Natural Language Supervision](#clip)   
 1. [LoRA: Low-Rank Adaptation of Large Language Models](#lora)   
@@ -32,6 +33,24 @@ layout: default
 {: reversed="reversed"}
 
 ---
+## <a name="scalingclipdown"></a> Scaling (Down) Clip: A Comprehensive Analysis of Data, Architecture, and Training Strategies
+* This paper does what its name suggests, but also focuses on doing it with less but high quality training data
+* The authors perform experiments using zero-shot transfer, linear probing, few-shot classification and image-text retrieval as their evaluation criteria
+* For smaller datasets, increasing the training epochs does not yield significant performance improvements on ImageNet. For larger datasets, more training epochs do result in enhanced performance on ImageNet.
+  * larger datasets and longer training results in improved performance of the trained CLIP models
+* Authors compute the similarity between images and texts to create subsets from the dataset
+  * How do they compute the similarity ? Not answered in the paper
+  * Models trained on higher quality datasets can outperform models trained on full datasets (i.e. when the models are trained for one epoch)
+* We should increase the dataset size for fully benefitting from increasing the ViT model size.
+* CNN models perform better with a smaller dataset due to its high inductive bias while ViTs perform better with a larger dataset.
+* While SLIP performs better when training on a smaller number of samples compared to FLIP and CLIP (+ augmentation), CLIP with strong data augmentation performs best when training on a larger dataset, except in some tasks
+* Check out the references for some interesting papers on generalizibility and scaling CLIP models
+
+
+References
+* [Paper](https://arxiv.org/html/2404.08197v2)
+
+---
 
 ## <a name="metaclip"></a> Demystifying CLIP data
 * This paper attempts to reveal CLIP’s data curation, making the entire data pipeline open source.
@@ -43,7 +62,7 @@ layout: default
   * Clip training starts from scratch, avoiding the introduction of biases through filters
   * CLIP’s curation process balances the data distribution over metadata, maximizing signal preservation while mitigating, rather than removing, noise in the data
 * The key secret behind OpenAI CLIP’s curation is to balance the counts of matched entries (ie keep 20K per query)
-* This paper performs many empirical data analysis to prove equal or better performance than openAI's clip
+* This paper performs many empirical data analysis to prove equal or better performance than OpenAI's clip
 
 References
 * [paper](https://arxiv.org/pdf/2309.16671)
