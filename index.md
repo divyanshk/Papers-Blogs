@@ -30,7 +30,8 @@ layout: default
 1. [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](#bert)   
 1. [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
-1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)   
+1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)  
+1. [Reinforcement Learning for Reasoning in Small LLMs: What Works and What Doesn’t](#smallmodelreasoning)
 {: reversed="reversed"}
 
 ---
@@ -694,4 +695,23 @@ $$
 References
 * [Paper](https://dl.acm.org/doi/pdf/10.1145/3219819.3220007)
 
+---
+
+## <a name="smallmodelreasoning"></a>Reinforcement Learning for Reasoning in Small LLMs: What Works and What Doesn’t
+
+* This study tries to make small reasoning models do a good job on certain benchmarks. The key lever is high quality datasets, and RL algorithm (GRPO with reward design). It also tries to highlight insights in training small models - particularly the instability in training them.
+* They achieve this by having very strict time and compute restrictions, and truly limit the space within which these small models operate. There might be scope to relax those constraints a bit and squeeze out better performance.
+* The findings illuminate the promise of RL-based methods to enhance small LLMs’ reasoning capabilities, achieving competitive performance with minimal resources. Simultaneously, they reveal critical challenges — such as data efficiency, optimization stability, and length constraints - that must be addressed to fully realize this potential.
+* By filtering and refining these datasets, the training data is both relevant and challenging, enabling efficient learning for small LLMs. This is a highly subjective process and imaginebly can require many iterations to nail down.
+* Authors open source two math based datasets, both filtered using another reasoning model, and based on certain heuristics - s1 and openscaleR dataset.
+* Employ a rule-based reward system comprising three components, designed to balance correctness, efficiency, and structure without relying on resource-intensive neural reward models: accuracy reward (final answer to be presented in a \boxed{} format), cosine reward (shorter correct solutions receive higher rewards, while longer incorrect solutions are penalized less severely, incentivizing concise yet accurate reasoning), and format reward (reasoning process within <think> and </think> tags).
+* Training is conducted on a cluster of 4 NVIDIA A40 GPUs (48GB VRAM each), imposing constraints that limit us to sampling 6 outputs per step with a maximum completion length of 4096 tokens.
+    * my take: this can be relaxed for better performance
+* Eval: zero-shot pass@1 metric to measure performance, defined as the proportion of problems correctly solved on the first attempt without prior examples.
+* After initial increase in perf, there is a drastic drop. This is correlated with unstable accuracy rewards, and varying completition lengths and incoherence after certain steps.
+* Incorporating a mix of easy and hard problems under reduced length constraints enhances early performance and stabilizes reasoning behavior, though long-term stability remains elusive.
+* For harder tasks, higher context limit might be necessary.
+
+References
+* [paper](https://arxiv.org/abs/2503.16219)
 ---
