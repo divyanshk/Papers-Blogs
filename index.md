@@ -732,7 +732,19 @@ References
 * We find that super weights (1) induce super activations, which have lasting effects throughout the entire model, and (2) suppress stopword likelihood.
 * For quantizing based on this knowledge, first, hold out the super outlier to prevent adverse effects on inlier quantization. Second, restore the super outlier’s value after dequantization, to ensure the super outlier’s effects are preserved.
 * There exists many ways to workaround super activations, primarily mitigating its effect.
-* Scaling with respect to block sizes has a clear trend. As the block size increases, model quality significantly degrades. This decline likely results from the increased quantization er- ror introduced when larger blocks of weights are quantized together, which allows outliers to impact more weights. In contrast, our super weight-aware quantization method demonstrates much greater robustness to larger block sizes. As the block size increases, the degradation in model quality is noticeably smaller compared to the round-to-near method.
+* Scaling with respect to block sizes has a clear trend. 
+    * In block quantization, the large tensor of weights (like in a neural network) is divided into smaller, fixed-size segments called blocks. Each block is then quantized independently using its own scale factor and zero-point, which are calculated based on the range of values within that specific block. This localized approach improves accuracy and reduces the impact of outliers compared to per-tensor quantization, though it adds a slight overhead for storing the additional metadata for each block. 
+    * Smaller blocks:
+      ✅ Better precision (each block optimized for its local range)
+      ✅ Outliers affect fewer weights
+      ❌ More overhead (storing more scale/zero-point pairs)
+      ❌ Slightly slower (more bookkeeping)
+      Larger blocks:
+      ✅ Less overhead (fewer scales to store)
+      ✅ Simpler, faster code
+      ❌ Worse precision (one size fits all)
+      ❌ Outliers ruin quantization for many weights
+    * As the block size increases, model quality significantly degrades. This decline likely results from the increased quantization er- ror introduced when larger blocks of weights are quantized together, which allows outliers to impact more weights. In contrast, our super weight-aware quantization method demonstrates much greater robustness to larger block sizes. As the block size increases, the degradation in model quality is noticeably smaller compared to the round-to-near method.
 
 References
 * [paper](https://arxiv.org/abs/2503.16219)
