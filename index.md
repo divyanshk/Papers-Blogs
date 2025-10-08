@@ -32,6 +32,7 @@ layout: default
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)  
 1. [Reinforcement Learning for Reasoning in Small LLMs: What Works and What Doesn’t](#smallmodelreasoning)
+1. [The Super Weight in Large Language Models](#superweight)
 {: reversed="reversed"}
 
 ---
@@ -714,4 +715,26 @@ References
 
 References
 * [paper](https://arxiv.org/abs/2503.16219)
+
+---
+
+## <a name="superweight"></a>The Super Weight in Large Language Models
+
+* Dettmers et al. (2022) discovered that once LLMs reach a certain scale, a small set of hidden state features contains outliers of exceptionally large magnitude. These outliers account for a small percentage of all activations but are crucial for preserving the compressed model’s quality
+* However, not all outliers are equally important. In this paper, we study a tiny yet important set of outliers in LLMs, termed super weights. In Llama-7B, pruning the super weight, a single scalar, completely destroys the model’s ability to generate text; the average accuracy of zero-shot down- stream tasks effectively plummets to zero.
+* We also find that the super weight amplifies input activation inliers to ultimately produce the exceptionally large magnitude activation observed by Sun et al. (2024) – we term this the super activation. This super activation persists throughout the model at exactly the same magnitude and position regardless of the prompt, and we find this is uniquely enabled by skip connections
+* Kovaleva et al. (2021) notes weight out- liers, which emerge gradually, beginning early in pre-training, and cause abnormal spikes at select dimensions in the output embedding vectors. Disabling those outliers significantly degrades both the training loss and the downstream task performance
+* Quantization is one of the most popular techniques for reducing LLM resource consumption. How- ever, quantizing LLMs is non-trivial, due to outliers that increase the range of values. Existing works typically study two settings for LLM quantization: (1) Weight-only quantization, where only weights are quantized into low-bit integers; (2) Weight-activation quantization, where both activa- tion and weights are quantized.
+* Recent studies have discovered that activation outliers are associated with weight outliers. The hidden dimensions where activation outliers emerge have a high correlation to sensitive weight channels (Heo et al., 2024; Lee et al., 2024). Along these lines, activation magnitudes have been used as an indicator to find salient weight channels to preserve in weight quantization
+* Interestingly, the accuracy drop associated with pruning the single super weight is much greater than the effect of all other outliers combined.
+* Super weights create super activations.
+* SWs can be located by detecting the spikes in the down proj inputs and outputs distributions across the layers. This detection only requires a single input prompt, rather than a set of validation data or use-case examples.
+* We find that super weights (1) induce super activations, which have lasting effects throughout the entire model, and (2) suppress stopword likelihood.
+* For quantizing based on this knowledge, first, hold out the super outlier to prevent adverse effects on inlier quantization. Second, restore the super outlier’s value after dequantization, to ensure the super outlier’s effects are preserved.
+* There exists many ways to workaround super activations, primarily mitigating its effect.
+* Scaling with respect to block sizes has a clear trend. As the block size increases, model quality significantly degrades. This decline likely results from the increased quantization er- ror introduced when larger blocks of weights are quantized together, which allows outliers to impact more weights. In contrast, our super weight-aware quantization method demonstrates much greater robustness to larger block sizes. As the block size increases, the degradation in model quality is noticeably smaller compared to the round-to-near method.
+
+References
+* [paper](https://arxiv.org/abs/2503.16219)
+
 ---
