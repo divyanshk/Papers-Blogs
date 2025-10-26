@@ -1,7 +1,9 @@
 ---
 layout: default
 ---
-
+1. [LlamaRL: A Distributed Asynchronous Reinforcement Learning Framework](#llamarl)   
+1. [Reinforcement Learning for Reasoning in Small LLMs: What Works and What Doesn’t](#smallmodelreasoning)   
+1. [The Super Weight in Large Language Models](#superweight)   
 1. [ImageBind: One Embedding Space To Bind Them All](#imagebind)   
 1. [Scaling (Down) Clip: A Comprehensive Analysis of Data, Architecture, and Training Strategies](#scalingclipdown)   
 1. [Demystifying CLIP data](#metaclip)   
@@ -31,8 +33,6 @@ layout: default
 1. [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)  
-1. [Reinforcement Learning for Reasoning in Small LLMs: What Works and What Doesn’t](#smallmodelreasoning)
-1. [The Super Weight in Large Language Models](#superweight)
 {: reversed="reversed"}
 
 ---
@@ -749,4 +749,20 @@ References
 References
 * [paper](https://arxiv.org/abs/2503.16219)
 
+---
+
+## <a name="llamarl"></a>LlamaRL: A Distributed Asynchronous Reinforcement Learning Framework
+
+* Asynchronous > Synchronous: Running training and generation processes asynchronously in parallel significantly improves throughput and resource utilization by minimizing computational bubbles, with efficiency advantages growing as model scale increases.
+* Distributed Model Placement is Critical: Fully separating generator and trainer onto different GPU clusters with independent configurations enables each component to optimize its parallelism strategy (model parallel size, data precision, batch size) without being constrained by the other.
+* Off-policy Corrections Enable Stability: Asynchronous training introduces 1 to n steps of delay (off-policyness). AIPO - Asynchronous Importance weighted Policy Optimization with single-sided clipping - effectively mitigates training instability in large-scale training. 
+* Weight Synchronization is the Bottleneck: Traditional parameter server architectures fail at scale due to network bandwidth and software stack inefficiencies. Fast, GPU-native weight updates are essential for asynchronous RL to work.
+* DDMA Solves Weight Updates at Scale: Fully distributed, GPU-native synchronization via direct GPU-to-GPU zero-copy transfers (NVLink for intra-node and Infiniband for inter-node) achieves linear scalability, enabling weight updates for terabyte-scale models across thousands of GPUs in approximately 2 seconds.
+* Memory Decoupling Unlocks Optimization: Asynchronous design decomposes shared memory constraints into two independent constraints (trainer and generator), allowing each to be optimized separately for maximum efficiency—this is the theoretical foundation for guaranteed speedup.
+* Generation Should Be Offloaded: Generation is memory-bound and contributes significantly to execution time. Complete offloading enhances scalability and flexibility, enabling fine-grained parallelism and quantization optimizations.
+* Single-Controller Architecture Scales: Built entirely on native PyTorch without heavyweight external orchestrators (like Ray), using a streamlined single-controller managing executors and communication channels, enabling seamless scaling to thousands of GPUs.
+* Flexibility Enables Algorithm Diversity: Modular executor-based design easily supports various RL algorithms (PPO, RLOO, GRPO, RAFT, multi-objective frameworks) by simply reconfiguring models, communication patterns, and data flows without monolithic code changes.
+
+References
+* [paper](https://arxiv.org/pdf/2505.24034)
 ---
