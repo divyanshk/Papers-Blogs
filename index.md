@@ -33,6 +33,7 @@ layout: default
 1. [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)  
+1. [Diffusion Beats Autoregressive in Data-Constrained Settings](#diffusion>ar)  
 {: reversed="reversed"}
 
 ---
@@ -765,4 +766,16 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2505.24034)
+---
+
+## <a name="diffusion>ar"></a>Diffusion Beats Autoregressive in Data-Constrained Settings
+
+* Key Takeaway: If you are compute-constrained, use autoregressive models; if you are data-constrained, use diffusion models.
+* Diffusion models are a class of generative AI that learn to create data by reversing a gradual noising process. They work by first corrupting training data with noise, then learning to predict and remove that noise step-by-step. In the context of language models, masked diffusion randomly masks tokens and trains the model to predict them in varying orders, unlike traditional left-to-right text generation.
+* Diffusion models extract far more value from repeated data - AR models effectively use repeated data for only about 4 epochs before overfitting, while diffusion models can train on the same data for up to 100 epochs with minimal performance degradation.
+* Looking at dataset size and available compute budget, one can figure out a threashold when AR will out-perform diffusion
+* Diffusion's advantage comes from implicit data augmentation - By randomly masking different tokens and predicting them in varying orders, diffusion models essentially see many different versions of the same data, unlike AR's fixed left-to-right processing.
+
+References
+* [paper]()
 ---
