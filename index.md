@@ -34,6 +34,7 @@ layout: default
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)  
 1. [Diffusion Beats Autoregressive in Data-Constrained Settings](#diffusion>ar)  
+1. [Defeating the Training-Inference Mismatch via FP16](#fp16>bf16)  
 {: reversed="reversed"}
 
 ---
@@ -777,5 +778,25 @@ References
 * Diffusion's advantage comes from implicit data augmentation - By randomly masking different tokens and predicting them in varying orders, diffusion models essentially see many different versions of the same data, unlike AR's fixed left-to-right processing.
 
 References
-* [paper]()
+* [paper](https://arxiv.org/pdf/2507.15857)
+
+---
+
+## <a name="fp16>bf16"></a>Defeating the Training-Inference Mismatch via FP16
+
+* FP16 solves the training-inference mismatch problem: The paper identifies that the root cause of instability in RL fine-tuning of LLMs stems from numerical mismatches between training and inference engines. Simply switching from BFloat16 (BF16) to Float16 (FP16) precision virtually eliminates this mismatch, providing more stable training without requiring complex algorithmic patches.
+* BF16's low precision is the culprit. It has higher range but lower precision, leads to errors which compound in an autoregressive settings, causing the training and inference policies to diverge significantly, leading to biased gradients and training collapse.
+* FP16 outperforms all algorithmic corrections. (Better to do it right than add fix-ups later) 
+    * The real trade-off historically has been:
+        * BF16: Easier to use (no loss scaling needed), wider range, became the "lazy default"
+        * FP16: Requires loss scaling to handle limited dynamic range, but higher precision
+    * However, the paper argues that for RL fine-tuning specifically:
+        * The dynamic range is already established from pre-training
+        * Loss scaling is now a mature, automated feature (just a config change)
+        * The precision benefits outweigh any minor implementation complexity
+* Performance hits? Modern GPUs support both equally well: The paper notes that FP16 has been fully supported since NVIDIA's Volta architecture, and current Ampere/Hopper GPUs have hardware acceleration for both FP16 and BF16. So there's no inherent efficiency disadvantage to FP16 on modern hardware.
+
+References
+* [paper](https://arxiv.org/pdf/2510.26788v1)
+
 ---
