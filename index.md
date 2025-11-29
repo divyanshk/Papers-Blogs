@@ -1,6 +1,8 @@
 ---
 layout: default
 ---
+1. [Diffusion Beats Autoregressive in Data-Constrained Settings](#diffusion>ar)  
+1. [Defeating the Training-Inference Mismatch via FP16](#fp16>bf16)  
 1. [LlamaRL: A Distributed Asynchronous Reinforcement Learning Framework](#llamarl)   
 1. [Reinforcement Learning for Reasoning in Small LLMs: What Works and What Doesn’t](#smallmodelreasoning)   
 1. [The Super Weight in Large Language Models](#superweight)   
@@ -33,8 +35,6 @@ layout: default
 1. [Notification Volume Control and Optimization System at Pinterest](#pinterest_notification)   
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)  
-1. [Diffusion Beats Autoregressive in Data-Constrained Settings](#diffusion>ar)  
-1. [Defeating the Training-Inference Mismatch via FP16](#fp16>bf16)  
 {: reversed="reversed"}
 
 ---
