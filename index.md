@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+1. [CUDA-L2: Surpassing cuBLAS Performance for Matrix Multiplication through Reinforcement Learning](#cuda-l2)
 1. [Diffusion Beats Autoregressive in Data-Constrained Settings](#diffusion>ar)  
 1. [Defeating the Training-Inference Mismatch via FP16](#fp16>bf16)  
 1. [LlamaRL: A Distributed Asynchronous Reinforcement Learning Framework](#llamarl)   
@@ -799,4 +800,23 @@ References
 References
 * [paper](https://arxiv.org/pdf/2510.26788v1)
 
+---
+
+## <a name="cuda-l2"></a>CUDA-L2: Surpassing cuBLAS Performance for Matrix Multiplication through Reinforcement Learning
+
+* AI system that beats NVIDIA's cuBLAS library at matrix multiplication using LLM + Reinforcement Learning. Achieves +22% speedup over torch.matmul, +19.2% over cuBLAS
+* Generates actual CUDA C++ code (.cu files compiled with nvcc) - not Python DSLs like Triton
+* Uses execution speed as the RL reward - the AI learns to write faster kernels through trial and error; Optimizes across 1,000 matrix configurations (all combinations of M, N, K from 64 to 16384)
+* Rewards shorter code → naturally pushes the system toward elegant abstractions; For small matrices: uses raw WMMA intrinsics (simple, fast), For large matrices: adopts CuTe abstractions (enables complex optimizations like multi-stage pipelining without verbose code)
+    * Even the most heavily hand-optimized kernels can be improved through LLM-guided RL by exploring configuration spaces at scales impractical for humans
+    * Essentially, use an abstraction (CuTe) as a lever to achieve more than possible with a more-control but lesser flexibility framework (hand written CUDA). 
+* Extends CUDA-L1 with multi-stage RL training, NCU profiling metrics, and retrieval-augmented context for better optimization decisions
+    * Multi-stage RL training progressing from broad (general kernel types) to specialized domains (matmul-specific kernels) 
+        * Early stages teach transferable skills, later stages refine domain-specific expertise (specific strategies for matmul)
+    * Including more comprehensive NCU profiling metrics (e.g., memory throughput, SM occupancy, cache efficiency) in the context 
+    * Incorporating retrieval-augmented context to accommodate new knowledge or architectural characteristics not covered in the foundation model 
+        * This seems very simple and effective, but if nailed right, I'd imagine can land massive gains - you leverage AI to 'out-source' the 'hard' stuff to humans, use that info well to make smarter choices
+
+References
+* [paper](https://arxiv.org/pdf/2512.02551)
 ---
