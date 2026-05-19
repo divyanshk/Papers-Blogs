@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-1. [Sparse Contrastive Learning for Content-Based Cold Item Recommendation](SEMCo)  
+1. [Sparse Contrastive Learning for Content-Based Cold Item Recommendation](#SEMCo)  
 1. [Efficient Learning of Sparse Representations from Interactions](#c-elsa)  
 1. [CUDA-L2: Surpassing cuBLAS Performance for Matrix Multiplication through Reinforcement Learning](#cuda-l2)  
 1. [Diffusion Beats Autoregressive in Data-Constrained Settings](#diffusion>ar)  
