@@ -769,6 +769,7 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2505.24034)
+
 ---
 
 ## <a name="diffusion>ar"></a>Diffusion Beats Autoregressive in Data-Constrained Settings
@@ -800,6 +801,7 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2510.26788v1)
+
 ---
 
 ## <a name="cuda-l2"></a>CUDA-L2: Surpassing cuBLAS Performance for Matrix Multiplication through Reinforcement Learning
@@ -819,6 +821,7 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2512.02551)
+
 ---
 
 ## <a name="c-elsa"></a>Efficient Learning of Sparse Representations from Interactions
@@ -835,4 +838,5 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2602.09935)
+
 ---
