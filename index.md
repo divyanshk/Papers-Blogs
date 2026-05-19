@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+1. [Sparse Contrastive Learning for Content-Based Cold Item Recommendation](SEMCo)  
 1. [Efficient Learning of Sparse Representations from Interactions](#c-elsa)  
 1. [CUDA-L2: Surpassing cuBLAS Performance for Matrix Multiplication through Reinforcement Learning](#cuda-l2)  
 1. [Diffusion Beats Autoregressive in Data-Constrained Settings](#diffusion>ar)  
@@ -838,5 +839,24 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2602.09935)
+
+---
+
+## <a name="SEMCo"></a>Sparse Contrastive Learning for Content-Based Cold Item Recommendation
+
+* The Problem: Traditional collaborative filtering (CF) recommender systems suffer during "item cold-start" when new items lack historical user interactions. Existing solutions typically try to project auxiliary item content (text, images) into a pre-trained CF embedding space.
+* The Bottleneck: This creates a fundamental information gap. CF embeddings capture user behavioral patterns and popularity biases, whereas content features capture semantic attributes. Forcing content to align with behavioral embeddings introduces noise, yields erratic recommendations, and inherits popularity biases.
+* The paper proposes abandoning CF alignment entirely. Instead, it advocates for purely content-based modeling where a content encoder maps items into a latent space where item-item similarity directly correlates with user preferences.
+* To train this content space without standard CF supervision, the authors introduce the SEMCo (Sampled Entmax for Multimodal Cold-start) framework
+    * a contrastive, sampled softmax regime
+    * Standard sampled softmax outputs dense (non-zero) probabilities. In large contrastive batches, this dilutes the supervision signal by calculating gradient updates for thousands of irrelevant negative examples. SEMCo replaces softmax with the $$\alpha$$-entmax family of functions
+* Multimodal Content Encoder
+    * Individual modalities (e.g., text descriptions, images) are mapped through a single layer, batch normalization, and a ReLU activation.
+    * The hidden vectors are fused using a lightweight attention module (a 2-layer MLP with a softmax output) that computes weights dynamically across modalities.
+    * The weighted sum is passed through a final linear layer and $$L_2$$-normalized to yield the final representation vector $$y$$.
+* Interesting take: how does the new latent space based embeddings work with Knowledge Distillation. Since the new space is entirely within the content space, it can transfers item-item similarity structures from a heavy, high-capacity teacher content encoder to a lightweight student content encoder.
+
+References
+* [paper](https://arxiv.org/pdf/2604.12990)
 
 ---
