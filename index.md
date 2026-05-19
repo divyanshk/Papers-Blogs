@@ -800,7 +800,6 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2510.26788v1)
-
 ---
 
 ## <a name="cuda-l2"></a>CUDA-L2: Surpassing cuBLAS Performance for Matrix Multiplication through Reinforcement Learning
@@ -824,8 +823,8 @@ References
 
 ## <a name="c-elsa"></a>Efficient Learning of Sparse Representations from Interactions
 
-* The paper addresses the memory bottlenecks of large embedding tables in production recommender systems by building on ELSA (Empirical Latent Space Autoencoder). ELSA is a popular linear collaborative filtering autoencoder that maps user interactions using an item embedding matrix ($A$) where rows are constrained to a unit $\ell_2$-norm.
-* The Core Technique (Compressed ELSA): Rather than relying on post-hoc compression after a model is trained, the authors introduce Compressed ELSA, a training strategy that learns high-dimensional sparse embedding layers during training. It accomplishes this by enforcing row-wise sparsity on the embedding matrix via a deterministic, absolute top-$k$ sparsification operator ($S_k(A)$). This operator masks all but the $k$ largest elements in each row, and the remaining active elements are immediately re-normalized to a unit $\ell_2$-norm before computing the loss.
+* The paper addresses the memory bottlenecks of large embedding tables in production recommender systems by building on ELSA (Empirical Latent Space Autoencoder). ELSA is a popular linear collaborative filtering autoencoder that maps user interactions using an item embedding matrix $$A$$ where rows are constrained to a unit $$\ell_2$$-norm.
+* The Core Technique (Compressed ELSA): Rather than relying on post-hoc compression after a model is trained, the authors introduce Compressed ELSA, a training strategy that learns high-dimensional sparse embedding layers during training. It accomplishes this by enforcing row-wise sparsity on the embedding matrix via a deterministic, absolute top-$k$ sparsification operator ($$S_k(A)$$). This operator masks all but the $k$ largest elements in each row, and the remaining active elements are immediately re-normalized to a unit $$\ell_2$$-norm before computing the loss.
 * Enforcing extreme sparsity from the very beginning of training can cause a "dead-latents" phenomenon, where certain dimensions never activate or specialize.
     * To circumvent this, the core training detail involves a gradual pruning schedule.
     * This allows all latent dimensions to participate early before gradually specializing into sparse representations.
@@ -833,7 +832,6 @@ References
     * Instead of storing a full 4-byte float for every single latent factor, the model stores compact index-value pairs only for active non-zero elements
     * Yields massive storage savings and fast candidate retrieval serving speeds without incurring the steep accuracy penalties typically seen in standard low-dimensional or post-hoc quantized baselines.
 * A key detail of learning sparse latent factors is that the active embedding dimensions naturally form an interpretable inverted-index structure.
-
 
 References
 * [paper](https://arxiv.org/pdf/2602.09935)
