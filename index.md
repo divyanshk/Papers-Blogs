@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+1. [Matryoshka Representation Learning](#matryoshka)  
 1. [Sparse Contrastive Learning for Content-Based Cold Item Recommendation](#SEMCo)  
 1. [Efficient Learning of Sparse Representations from Interactions](#c-elsa)  
 1. [CUDA-L2: Surpassing cuBLAS Performance for Matrix Multiplication through Reinforcement Learning](#cuda-l2)  
@@ -858,5 +859,15 @@ References
 
 References
 * [paper](https://arxiv.org/pdf/2604.12990)
+
+---
+
+## <a name="matryoshka"></a>Matryoshka Representation Learning
+
+* Traditional models produce fixed-size, rigid embeddings that distribute information uniformly across all dimensions. To meet varying downstream compute or storage constraints, users previously had to retrain multiple models or use post-hoc compression, which often resulted in severe accuracy loss or high maintenance overhead.
+* Instead of optimizing only the full-sized embedding, MRL modifies the training pipeline by introducing a multi-scale loss function. During each training step, the full embedding is truncated into multiple smaller, nested sub-vectors (e.g., $d/16, d/8, d/4, d/2, d$), a loss is calculated for each scale independently, and these losses are aggregated to backpropagate together.
+* This nested optimization forces the model to prioritize and pack the most critical, broad semantic information into the earliest dimensions (the prefix), while later dimensions are restricted to encoding fine-grained, non-critical nuances. As a result, the first $m$ dimensions of a larger vector naturally form a highly coherent, standalone $m$-dimensional embedding.
+* This enables improved downstream applications where lower dimensional embeddings can be used without retraining.  
+* So its like having many, many dimensional embeddings all trained together once for one purpose.
 
 ---
