@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+1. [DLRM](#dlrm)   
 1. [Matryoshka Representation Learning](#matryoshka)  
 1. [Sparse Contrastive Learning for Content-Based Cold Item Recommendation](#SEMCo)  
 1. [Efficient Learning of Sparse Representations from Interactions](#c-elsa)  
@@ -40,6 +41,18 @@ layout: default
 1. [Class-Balanced Loss Based on Effective Number of Samples](#class_balanced_loss)    
 1. [Modeling Task Relationships in Multi-task Learning with Multi-gate Mixture-of-Experts](#mmoe)  
 {: reversed="reversed"}
+
+---
+
+## <a name="dlrm"></a> DLRM
+
+* Two feature types, two paths. DLRM splits inputs into dense features (continuous values like price or age — normalized/log-transformed, then pushed through a bottom MLP) and sparse features (categorical IDs like user or item — each looked up in its own embedding table). Both paths emit D-dimensional vectors.
+* Dense features collapse to one vector. The bottom MLP fuses all dense features into a single 1 × D vector, while the sparse side produces n × D (one per categorical feature). This is why differing feature counts never cause a shape conflict — there's only ever one dense vector.
+* Everything pools, then interacts pairwise. The dense vector stacks on top of the n sparse vectors into one matrix Z of shape (n+1) × D; Z · Zᵀ then computes the dot product of every pair, giving an (n+1) × (n+1) matrix of scalars.
+* Dimensions vs. counts. The dot product requires matching D (guaranteed by construction), but not matching feature counts — it maps any two D-vectors to a scalar. DLRM keeps the upper triangle of unique pairs, flattens it, concatenates the original dense vector, and feeds the top MLP for the final prediction.
+
+References
+* [Paper](https://arxiv.org/abs/1906.00091)
 
 ---
 
